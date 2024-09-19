@@ -281,7 +281,7 @@ func RunOperator(ctx context.Context, controllerConfig *controllercmd.Controller
 		deploymentHooks = []dc.DeploymentHookFunc{
 			csidrivercontrollerservicecontroller.WithControlPlaneTopologyHook(guestConfigInformers),
 			csidrivercontrollerservicecontroller.WithReplicasHook(
-				guestKubeInformersForNamespaces.InformersFor("").Core().V1().Nodes().Lister(),
+				guestConfigInformers.Config().V1().Infrastructures().Lister(),
 			),
 			withVolumeGroupSnapshotWebhook(volumeGroupSnapshotAPIEnabled),
 		}

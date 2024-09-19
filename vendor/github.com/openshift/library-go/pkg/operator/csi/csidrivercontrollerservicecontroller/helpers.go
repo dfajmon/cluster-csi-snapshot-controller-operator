@@ -14,7 +14,7 @@ import (
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/labels"
 	corev1 "k8s.io/client-go/informers/core/v1"
-	corev1listers "k8s.io/client-go/listers/core/v1"
+	v1 "github.com/openshift/client-go/config/listers/config/v1"
 
 	configv1 "github.com/openshift/api/config/v1"
 	opv1 "github.com/openshift/api/operator/v1"
@@ -128,7 +128,7 @@ func WithSecretHashAnnotationHook(
 // When node ports or hostNetwork are used, maxSurge=0 should be set in the
 // Deployment RollingUpdate strategy to prevent the new pod from getting stuck
 // waiting for a node with free ports.
-func WithReplicasHook(nodeLister corev1listers.NodeLister) dc.DeploymentHookFunc {
+func WithReplicasHook(nodeLister v1.InfrastructureLister) dc.DeploymentHookFunc {
 	return func(_ *opv1.OperatorSpec, deployment *appsv1.Deployment) error {
 		nodeSelector := deployment.Spec.Template.Spec.NodeSelector
 		nodes, err := nodeLister.List(labels.SelectorFromSet(nodeSelector))
